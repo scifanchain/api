@@ -7,12 +7,13 @@ from .database import engine
 Base = declarative_base()
 Base.metadata.create_all(bind=engine)
 
+
 class Author(Base):
 
     __tablename__ = "authors"
 
     id = Column(Integer, primary_key=True, index=True)
-    usermame = Column(String(20), unique=True, index=True)
+    username = Column(String(20), unique=True, index=True)
     nickname = Column(String(20))
     email = Column(String(100), unique=True, index=True)
     hashed_password = Column(String)

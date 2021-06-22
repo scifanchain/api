@@ -3,6 +3,13 @@ from pydantic import BaseModel
 from sqlalchemy.sql.sqltypes import SMALLINT
 
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
+
 class StageBase(BaseModel):
     title: str
     content: Optional[Text] = None
