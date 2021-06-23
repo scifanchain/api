@@ -30,8 +30,6 @@ class TokenData(BaseModel):
 class StageBase(BaseModel):
     title: str
     content: Optional[Text] = None
-    type: 1
-
 
 class StageCreate(StageBase):
     pass
