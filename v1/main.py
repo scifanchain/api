@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, rou
 import uvicorn
 from routers import AuthorsRouter, StagesRouter
 from fastapi.middleware.cors import CORSMiddleware
@@ -34,6 +34,11 @@ app.add_middleware(
 
 app.include_router(AuthorsRouter.router)
 app.include_router(StagesRouter.router)
+
+
+@app.get("/")
+async def root():
+    return {"message": "Welcome!"}
 
 if __name__ == '__main__':
     uvicorn.run(
