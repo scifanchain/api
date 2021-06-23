@@ -30,7 +30,7 @@ class TokenData(BaseModel):
 class StageBase(BaseModel):
     title: str
     content: Optional[Text] = None
-    type: StageTypeEnum
+    type: StageTypeEnum.人物
 
 
 class StageCreate(StageBase):
