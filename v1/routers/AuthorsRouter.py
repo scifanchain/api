@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 router = APIRouter()
 
@@ -20,6 +21,7 @@ def read_authors(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
 
 @router.get("/authors/me/", response_model=schemas.Author, tags=["authors"])
 async def read_authors_me(current_author: schemas.Author = Depends(crud.get_current_user)):
+    print(current_author.__dict__)
     return current_author
 
 

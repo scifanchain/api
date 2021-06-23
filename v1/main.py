@@ -1,8 +1,7 @@
-from fastapi import FastAPI, Depends
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import FastAPI
+import uvicorn
 from routers import AuthorsRouter, StagesRouter
 
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 app = FastAPI(
     # dependencies=[Depends(get_query_token)],
@@ -13,8 +12,14 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
 app.include_router(AuthorsRouter.router)
 app.include_router(StagesRouter.router)
+
+if __name__ == '__main__':
+    uvicorn.run(
+        app='main:app', 
+        host="127.0.0.1",
+        port=7000, 
+        reload=True,
+        debug=True,
+    )

@@ -113,8 +113,8 @@ def get_stages(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Stage).offset(skip).limit(limit).all()
 
 
-def create_stage(db: Session, stage: schemas.StageCreate, author_id: int):
-    db_stage = models.Stage(**stage.dict(), owner_id=author_id)
+def create_stage(db: Session, stage: schemas.StageCreate, author: schemas.Author):
+    db_stage = models.Stage(**stage.dict(), owner_id=author.id)
     db.add(db_stage)
     db.commit()
     db.refresh(db_stage)
