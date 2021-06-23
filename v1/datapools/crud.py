@@ -13,7 +13,7 @@ from fastapi import Depends, status, HTTPException
 # 令牌签名密钥
 SECRET_KEY = "da0346235d5544c31273e0dfc044a730b00c5ab7f676f75721778c9f6104d3e3"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 300
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
