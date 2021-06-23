@@ -1,4 +1,4 @@
-from fastapi import FastAPI, rou
+from fastapi import FastAPI
 import uvicorn
 from routers import AuthorsRouter, StagesRouter
 from fastapi.middleware.cors import CORSMiddleware
