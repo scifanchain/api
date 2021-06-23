@@ -18,8 +18,9 @@ fake_items_db = {"plumbus": {"name": "Plumbus"}, "gun": {"name": "Portal Gun"}}
 
 
 @router.get("/")
-async def read_stages():
-    return fake_items_db
+async def read_stages(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    stages = crud.get_stages(db, skip=skip, limit=limit)
+    return stages
 
 @router.post("/create_stage/", response_model=schemas.Stage)
 async def create_stage(stage: schemas.StageCreate, db: Session = Depends(get_db), author: schemas.Author = Depends(crud.get_current_user)):
