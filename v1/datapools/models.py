@@ -16,7 +16,7 @@ class Author(Base):
     username = Column(String(20), unique=True, index=True)
     nickname = Column(String(20))
     email = Column(String(100), unique=True, index=True)
-    hashed_password = Column(String)
+    hashed_password = Column(String(300))
     token = Column(String(200))
     is_active = Column(Boolean, default=True)
 
