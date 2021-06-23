@@ -16,8 +16,10 @@ app = FastAPI(
 origins = [
     "http://scifanchain.com",
     "http://www.scifanchain.com",
+    "http://api.scifanchain.com",
     "https://scifanchain.com",
     "https://www.scifanchain.com",
+    "https://api.scifanchain.com",
 ]
 
 app.add_middleware(
