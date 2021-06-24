@@ -25,7 +25,7 @@ async def read_authors_me(current_author: schemas.Author = Depends(crud.get_curr
     return current_author
 
 
-@router.post("/authors/create_author/", response_model=schemas.Author, tags=["authors"])
+@router.post("/authors/create_author/", response_model=schemas.Token, tags=["authors"])
 def create_author(author: schemas.AuthorCreate, db: Session = Depends(get_db)):
     author = crud.create_author(db=db, author=author)
 
