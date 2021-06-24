@@ -33,15 +33,7 @@ def create_author(author: schemas.AuthorCreate, db: Session = Depends(get_db)):
     access_token = crud.create_access_token(
         data={"sub": author.username}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer", "exp": access_token_expires}
-
-
-@router.get("/authors/{username}/", response_model=schemas.Author, tags=["authors"])
-def read_author(username, db: Session = Depends(get_db)):
-    db_author = crud.get_author_by_username(db, username=username)
-    if db_author is None:
-        raise HTTPException(status_code=404, detail="用户不存在")
-    return db_author
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
 @router.post("/authors/token/", response_model=schemas.Token, tags=["authors"])
@@ -57,7 +49,18 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token = crud.create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer", "exp": access_token_expires}
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
+@router.get("/authors/{username}/", response_model=schemas.Author, tags=["authors"])
+def read_author(username, db: Session = Depends(get_db)):
+    db_author = crud.get_author_by_username(db, username=username)
+    if db_author is None:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    return db_author
+
+
+
 
 
 

@@ -76,7 +76,6 @@ async def get_current_active_user(current_user: schemas.Author = Depends(get_cur
 
 # 根据ID获取某一用户
 def get_author(db: Session, author_id: int):
-
     return db.query(models.Author).filter(models.Author.id == author_id).first()
 
 # 根据用户名获取某一用户
@@ -112,6 +111,11 @@ def create_author(db: Session, author: schemas.AuthorCreate):
 # 获取stages列表
 def get_stages(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Stage).offset(skip).limit(limit).all()
+
+
+# 获取stages列表
+def get_stage(stage_id, db: Session):
+    return db.query(models.Stage).filter(models.Stage.id == stage_id).first()
 
 # 创建stage
 def create_stage(db: Session, stage: schemas.StageCreate, author: schemas.Author):
