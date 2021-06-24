@@ -13,11 +13,11 @@ class Author(Base):
     __tablename__ = "authors"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String(20), unique=True, index=True)
-    nickname = Column(String(20))
-    email = Column(String(100), unique=True, index=True)
+    username = Column(String(50), unique=True, index=True)
+    nickname = Column(String(50))
+    email = Column(String(200), unique=True, index=True)
     hashed_password = Column(String(300))
-    token = Column(String(200))
+    token = Column(String(300))
     is_active = Column(Boolean, default=True)
 
     stages = relationship("Stage", back_populates="owner")

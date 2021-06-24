@@ -27,7 +27,13 @@ async def read_authors_me(current_author: schemas.Author = Depends(crud.get_curr
 
 @router.post("/create_author/", response_model=schemas.Author, tags=["authors"])
 def create_author(author: schemas.AuthorCreate, db: Session = Depends(get_db)):
-    return crud.create_author(db=db, author=author)
+    author = crud.create_author(db=db, author=author)
+
+    access_token_expires = timedelta(minutes=crud.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = crud.create_access_token(
+        data={"sub": author.username}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer", "exp": access_token_expires}
 
 
 @router.get("/authors/{username}/", response_model=schemas.Author, tags=["authors"])
