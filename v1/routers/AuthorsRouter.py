@@ -25,17 +25,17 @@ async def read_authors_me(current_author: schemas.Author = Depends(crud.get_curr
     return current_author
 
 
+@router.post("/create_author/", response_model=schemas.Author, tags=["authors"])
+def create_author(author: schemas.AuthorCreate, db: Session = Depends(get_db)):
+    return crud.create_author(db=db, author=author)
+
+
 @router.get("/authors/{username}/", response_model=schemas.Author, tags=["authors"])
 def read_author(username, db: Session = Depends(get_db)):
     db_author = crud.get_author_by_username(db, username=username)
     if db_author is None:
         raise HTTPException(status_code=404, detail="用户不存在")
     return db_author
-
-
-@router.post("/create_author/", response_model=schemas.Author, tags=["authors"])
-def create_author(author: schemas.AuthorCreate, db: Session = Depends(get_db)):
-    return crud.create_author(db=db, author=author)
 
 
 @router.post("/token/", response_model=schemas.Token, tags=["authors"])
