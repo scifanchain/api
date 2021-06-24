@@ -25,7 +25,7 @@ async def read_authors_me(current_author: schemas.Author = Depends(crud.get_curr
     return current_author
 
 
-@router.post("/create_author/", response_model=schemas.Author, tags=["authors"])
+@router.post("/authors/create_author/", response_model=schemas.Author, tags=["authors"])
 def create_author(author: schemas.AuthorCreate, db: Session = Depends(get_db)):
     author = crud.create_author(db=db, author=author)
 
@@ -44,7 +44,7 @@ def read_author(username, db: Session = Depends(get_db)):
     return db_author
 
 
-@router.post("/token/", response_model=schemas.Token, tags=["authors"])
+@router.post("/authors/token/", response_model=schemas.Token, tags=["authors"])
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = crud.authenticate_user(db, form_data.username, form_data.password)
     if not user:
