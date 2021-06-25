@@ -17,7 +17,7 @@ async def create_stage(stage: schemas.StageCreate, db: Session = Depends(get_db)
 @router.post("/stages/test/", response_model=schemas.Test, tags=["stages"])
 def create_test(form_data: schemas.TestCreate, db: Session = Depends(get_db)):
     test = crud.create_test(db=db, title=form_data.title)
-    return {"id":test.id, "title": test.title}
+    return {"id": test.id, "title": test.title}
 
 
 @router.get("/stages/", tags=["stages"])
