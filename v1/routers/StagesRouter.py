@@ -14,11 +14,9 @@ router = APIRouter(
 
 )
 
-
 @router.post("/create_stage/", response_model=schemas.Stage)
 async def create_stage(stage: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db), author: schemas.Author = Depends(crud.get_current_user)):
     return crud.create_stage(db=db, stage=stage, author=author)
-
 
 @router.get("/")
 async def read_stages(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -29,8 +27,6 @@ async def read_stages(skip: int = 0, limit: int = 100, db: Session = Depends(get
 async def read_stages(stage_id: int, db: Session = Depends(get_db)):
     stage = crud.get_stage(stage_id, db)
     return stage
-
-
 
 
 
