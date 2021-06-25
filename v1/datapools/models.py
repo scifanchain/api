@@ -21,6 +21,7 @@ class Author(Base):
     is_active = Column(Boolean, default=True)
 
     stages = relationship("Stage", back_populates="owner")
+    tests = relationship("Test", back_populates="towner")
 
 
 class Stage(Base):
@@ -35,10 +36,10 @@ class Stage(Base):
 
 
 class Test(Base):
-    __tablename__ = "test"
+    __tablename__ = "tests"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(200), index=True)
     owner_id = Column(Integer, ForeignKey("authors.id"))
 
-    owner = relationship("Author", back_populates="test")
+    towner = relationship("Author", back_populates="tests")
