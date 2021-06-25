@@ -11,15 +11,14 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 router = APIRouter()
 
 
-@router.post("/stages/create_stage/", response_model=schemas.Stage, tags=["stages"])
-async def create_stage(stage: schemas.StageCreate, db: Session = Depends(get_db), author: schemas.Author = Depends(crud.get_current_user)):
-    return crud.create_stage(stage=stage, db=db, author=author)
-
-
 @router.post("/stages/test/", response_model=schemas.Test, tags=["stages"])
 def create_test(form_data: schemas.TestCreate, db: Session = Depends(get_db)):
     test = crud.create_test(db=db, title=form_data.title)
     return {"id": test.id, "title": test.title}
+
+@router.post("/stages/create_stage/", response_model=schemas.Stage, tags=["stages"])
+async def create_stage(stage: schemas.StageCreate, db: Session = Depends(get_db), author: schemas.Author = Depends(crud.get_current_user)):
+    return crud.create_stage(stage=stage, db=db, author=author)
 
 
 @router.get("/stages/", tags=["stages"])
