@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.post("/stages/create_stage/", response_model=schemas.Stage, tags=["stages"])
-async def create_stage(stage: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db), author: schemas.Author = Depends(crud.get_current_user)):
+async def create_stage(stage: schemas.StageCreate, db: Session = Depends(get_db), author: schemas.Author = Depends(crud.get_current_user)):
     return crud.create_stage(stage=stage, db=db, author=author)
 
 
