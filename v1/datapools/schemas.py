@@ -63,5 +63,8 @@ class Author(AuthorBase):
     class Config:
         orm_mode = True
 
+class Test(BaseModel):
+    id: int
+    title: str
 
 

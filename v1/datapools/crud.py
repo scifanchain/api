@@ -124,3 +124,11 @@ def create_stage(db: Session, stage: schemas.StageCreate, author: schemas.Author
     db.commit()
     db.refresh(db_stage)
     return db_stage
+
+# 创建stage
+def create_test(db: Session, test: schemas.Test):
+    db_test = models.Test(**test.dict())
+    db.add(db_test)
+    db.commit()
+    db.refresh(db_test)
+    return db_test
