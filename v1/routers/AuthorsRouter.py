@@ -1,4 +1,3 @@
-import re
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from datapools import crud, models, schemas

@@ -6,6 +6,8 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from datapools.database import get_db
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 router = APIRouter()
 
 
