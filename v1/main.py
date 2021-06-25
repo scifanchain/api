@@ -31,9 +31,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-app.include_router(AuthorsRouter.router)
 app.include_router(StagesRouter.router)
+app.include_router(AuthorsRouter.router)
+
 
 
 @app.get("/")
