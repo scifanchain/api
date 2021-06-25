@@ -70,11 +70,11 @@ class TestBase(BaseModel):
     title: str
 
 
-class StageCreate(TestBase):
+class TestCreate(TestBase):
     pass
 
 
-class Test(BaseModel):
+class Test(TestBase):
     id: int
 
     class Config:
