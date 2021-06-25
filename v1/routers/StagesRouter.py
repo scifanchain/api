@@ -29,7 +29,7 @@ async def read_stages(stage_id: int, db: Session = Depends(get_db)):
     return stage
 
 @router.post("/test/", response_model=schemas.Test)
-async def create_stage(test: schemas.Test, db: Session = Depends(get_db)):
+async def create_stage(test: schemas.TestCreate, db: Session = Depends(get_db)):
     return crud.create_test(test=test, db=db)
 
 
