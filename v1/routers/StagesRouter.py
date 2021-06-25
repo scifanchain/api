@@ -20,8 +20,8 @@ async def create_stage(stage: OAuth2PasswordRequestForm = Depends(), db: Session
 
 
 @router.post("/test/", response_model=schemas.Test)
-async def create_test(test: schemas.TestCreate, db: Session = Depends(get_db)):
-    test = crud.create_test(test=test, db=db)
+def create_test(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    test = crud.create_test(db=db, title=form_data.title)
     return {"id":test.id, "title": test.title}
 
 @router.get("/")
