@@ -126,9 +126,12 @@ def create_stage(db: Session, stage: schemas.StageCreate, author: schemas.Author
     return db_stage
 
 # 创建stage
-def create_test(db: Session, title: str):
+
+
+def create_test(db: Session, title: str,  author: schemas.Author):
     db_test = models.Test(
-        title = title
+        title = title,
+        owner_id=author.id
     )
     db.add(db_test)
     db.commit()
