@@ -1,4 +1,3 @@
-from pydantic.main import Model
 from datapools import crud, schemas
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm.session import Session
