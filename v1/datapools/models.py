@@ -32,3 +32,10 @@ class Stage(Base):
     owner_id = Column(Integer, ForeignKey("authors.id"))
 
     owner = relationship("Author", back_populates="stages")
+
+
+class Test(Base):
+    __tablename__ = "test"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(200), index=True)
