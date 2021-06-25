@@ -64,12 +64,21 @@ class Author(AuthorBase):
         orm_mode = True
 
 
-class TestCreate(BaseModel):
+# Test
+
+class TestBase(BaseModel):
     title: str
+
+
+class StageCreate(TestBase):
+    pass
 
 
 class Test(BaseModel):
     id: int
-    title: str
+
+    class Config:
+        orm_mode = True
+
 
 
