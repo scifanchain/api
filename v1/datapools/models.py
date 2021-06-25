@@ -39,3 +39,6 @@ class Test(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(200), index=True)
+    owner_id = Column(Integer, ForeignKey("authors.id"))
+
+    owner = relationship("Author", back_populates="test")
