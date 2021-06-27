@@ -47,7 +47,6 @@ class Stage(StageBase):
 
 class AuthorBase(BaseModel):
     username: str
-    nickname: str
     email: str
 
 
@@ -57,6 +56,7 @@ class AuthorCreate(AuthorBase):
 
 class Author(AuthorBase):
     id: int
+    nickname: str
     is_active: bool
     stages: List[Stage] = []
 
