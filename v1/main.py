@@ -34,8 +34,6 @@ app.add_middleware(
 app.include_router(StagesRouter.router)
 app.include_router(AuthorsRouter.router)
 
-
-
 @app.get("/")
 async def root():
     return {"message": "Welcome!"}

@@ -99,7 +99,7 @@ def create_author(db: Session, author: schemas.AuthorCreate):
     hashed_password = get_password_hash(author.password)
     db_author = models.Author(
         username = author.username,
-        nickname = author.nickname,
+        nickname = '',
         email=author.email, 
         chain_address = '',
         hashed_password=hashed_password)

@@ -55,6 +55,7 @@ class AuthorCreate(AuthorBase):
 
 class Author(AuthorBase):
     id: int
+    nickname: str
     is_active: bool
     stages: List[Stage] = []
 
