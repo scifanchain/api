@@ -44,16 +44,14 @@ class Stage(StageBase):
 
 
 # Author
-
 class AuthorBase(BaseModel):
     username: str
     nickname: str
+    chain_address: str
     email: str
-
 
 class AuthorCreate(AuthorBase):
     password: str
-
 
 class Author(AuthorBase):
     id: int

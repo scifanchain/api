@@ -17,7 +17,7 @@ class Author(Base):
     nickname = Column(String(50))
     email = Column(String(200), unique=True, index=True)
     hashed_password = Column(String(300))
-    token = Column(String(300))
+    chain_address = Column(String(300))
     is_active = Column(Boolean, default=True)
 
     stages = relationship("Stage", back_populates="owner")
