@@ -46,7 +46,6 @@ class Stage(StageBase):
 # Author
 class AuthorBase(BaseModel):
     username: str
-    nickname: str
     chain_address: str
     email: str
 
