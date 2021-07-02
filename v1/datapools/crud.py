@@ -101,7 +101,7 @@ def create_author(db: Session, author: schemas.AuthorCreate):
         username = author.username,
         nickname = '',
         email=author.email, 
-        chain_address = '',
+        chain_address = author.chain_address,
         hashed_password=hashed_password)
     db.add(db_author)
     db.commit()
