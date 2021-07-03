@@ -19,31 +19,31 @@ class MaturityEnum(IntEnum):
     成稿 = 3
 
 class Token(BaseModel):
-    access_token: str
-    token_type: str
+  access_token: str
+  token_type: str
 
 class TokenData(BaseModel):
-    username: Optional[str] = None
+  username: Optional[str] = None
 
 
 # Stage
 
 class StageBase(BaseModel):
-    title: str
-    content: Optional[Text] = None
+  title: str
+  content: Optional[Text] = None
 
 class StageCreate(StageBase):
-    pass
+  pass
 
 class StageUpdate(StageBase):
-  owner_id: int
+  pass
 
 class Stage(StageBase):
-    id: int
-    owner_id: int
+  id: int
+  owner_id: int
 
-    class Config:
-        orm_mode = True
+  class Config:
+      orm_mode = True
 
 
 # Author
