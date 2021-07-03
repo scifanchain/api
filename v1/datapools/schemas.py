@@ -65,24 +65,3 @@ class Author(AuthorBase):
 
     class Config:
         orm_mode = True
-
-
-# Test
-
-class TestBase(BaseModel):
-    title: str
-
-
-class TestCreate(TestBase):
-    pass
-
-
-class Test(TestBase):
-    id: int
-    owner_id: int
-
-    class Config:
-        orm_mode = True
-
-
-
