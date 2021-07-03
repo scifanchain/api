@@ -126,11 +126,10 @@ def create_stage(db: Session, stage: schemas.StageCreate, author: schemas.Author
     db.refresh(db_stage)
     return db_stage
 
+
 # 更新stage
-
-
 def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session):
-  db_stage = db.query(models.Stage).filter(models.Stage.id == stage_id).first
+  db_stage = db.query(models.Stage).filter(models.Stage.id == stage_id).first()
   if db_stage:
     update_dict = stage_update.dict(exclude_unset=True)
     for k, v in update_dict.items():
