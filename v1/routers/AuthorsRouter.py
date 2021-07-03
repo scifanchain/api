@@ -12,12 +12,6 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 router = APIRouter()
 
 
-@router.post("/authors/test/", response_model=schemas.Test, tags=["authors"])
-def create_test(form_data: schemas.TestCreate, db: Session = Depends(get_db)):
-    test = crud.create_test(db=db, title=form_data.title)
-    return {"id": test.id, "title": test.title}
-
-
 @router.get("/authors/", response_model=List[schemas.Author], tags=["authors"])
 def read_authors(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     authors = crud.get_authors(db, skip=skip, limit=limit)
