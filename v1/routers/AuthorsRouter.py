@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
-from .. datapools import crud, models, schemas
+from datapools import crud, models, schemas
 from sqlalchemy.orm import Session
 from datapools.database import get_db
 from datetime import datetime, timedelta
