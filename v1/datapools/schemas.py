@@ -36,7 +36,6 @@ class StageCreate(StageBase):
     pass
 
 class StageUpdate(StageBase):
-  id: int
   owner_id: int
 
 class Stage(StageBase):
