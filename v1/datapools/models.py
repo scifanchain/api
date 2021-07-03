@@ -1,6 +1,6 @@
 from fastapi import param_functions
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text, Table
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import BigInteger, SmallInteger
 from .database import engine
@@ -9,11 +9,12 @@ Base = declarative_base()
 Base.metadata.create_all(bind=engine)
 
 # Stage与Author多对多关联中间表
-class StageAuthor(Base):
-  __tablename__ = 'stages_authors'
-
-  stage_id = Column(Integer, primary_key=True, index=True)
-  author_id = Column(Integer, primary_key=True, index=True)
+stages_authors = Table(
+    "stages_authors",
+    Base.metadata,
+    Column("stage_id", Integer, ForeignKey("stages.id"), nullable=False, primary_key=True),
+    Column("author_id", Integer, ForeignKey("authors.id"), nullable=False, primary_key=True)
+)
 
 
 class Author(Base):
@@ -29,10 +30,10 @@ class Author(Base):
     is_active = Column(Boolean, default=True)
 
     stages = relationship("Stage", back_populates="owner")
-    stages_authors = relationship(
+    stages_join = relationship(
         "Stage",
-        secondary=StageAuthor,
-        back_populates="stages_join")
+        secondary=stages_authors,
+        back_populates="partners")
 
 
 
@@ -45,10 +46,10 @@ class Stage(Base):
     owner_id = Column(Integer, ForeignKey("authors.id"))
 
     owner = relationship("Author", back_populates="stages")
-    stages_authors = relationship(
+    partners = relationship(
         "Author",
-        secondary=StageAuthor,
-        back_populates="partners")
+        secondary=stages_authors,
+        back_populates="stages_join")
 
 
 
