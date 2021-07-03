@@ -41,7 +41,6 @@ class StageUpdate(StageBase):
 class Stage(StageBase):
     id: int
     owner_id: int
-    partner_id: int
 
     class Config:
         orm_mode = True
