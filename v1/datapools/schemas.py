@@ -1,4 +1,5 @@
 from typing import List, Optional, Text
+from v1.datapools.models import Stage
 from pydantic import BaseModel
 from sqlalchemy.sql.sqltypes import Integer, SMALLINT
 from enum import Enum, IntEnum
@@ -34,10 +35,14 @@ class StageBase(BaseModel):
 class StageCreate(StageBase):
     pass
 
+class StageUpdate(StageBase):
+  id: int
+  owner_id: int
 
 class Stage(StageBase):
     id: int
     owner_id: int
+    partner_id: int
 
     class Config:
         orm_mode = True

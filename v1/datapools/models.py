@@ -1,11 +1,19 @@
+from fastapi import param_functions
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.sqltypes import SmallInteger
+from sqlalchemy.sql.sqltypes import BigInteger, SmallInteger
 from .database import engine
 
 Base = declarative_base()
 Base.metadata.create_all(bind=engine)
+
+# Stage与Author多对多关联中间表
+class StageAuthor(Base):
+  __tablename__ = 'stages_authors'
+
+  stage_id = Column(Integer, primary_key=True, index=True)
+  author_id = Column(Integer, primary_key=True, index=True)
 
 
 class Author(Base):
@@ -21,7 +29,11 @@ class Author(Base):
     is_active = Column(Boolean, default=True)
 
     stages = relationship("Stage", back_populates="owner")
-    tests = relationship("Test", back_populates="towner")
+    stages_join = relationship(
+        "Stage",
+        secondary=StageAuthor,
+        back_populates="stages_join")
+
 
 
 class Stage(Base):
@@ -33,6 +45,11 @@ class Stage(Base):
     owner_id = Column(Integer, ForeignKey("authors.id"))
 
     owner = relationship("Author", back_populates="stages")
+    partners = relationship(
+        "Author",
+        secondary=StageAuthor,
+        back_populates="partners")
+
 
 
 class Test(Base):
@@ -41,5 +58,3 @@ class Test(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(200), index=True)
     owner_id = Column(Integer, ForeignKey("authors.id"))
-
-    towner = relationship("Author", back_populates="tests")

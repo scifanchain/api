@@ -1,3 +1,4 @@
+from sqlalchemy.sql.functions import mode
 from datapools.database import get_db
 from sqlalchemy.orm import Session, session
 from . import models, schemas
@@ -125,15 +126,25 @@ def create_stage(db: Session, stage: schemas.StageCreate, author: schemas.Author
     db.refresh(db_stage)
     return db_stage
 
-# 创建stage
+# 更新stage
 
 
-def create_test(db: Session, title: str,  author: schemas.Author):
-    db_test = models.Test(
-        title = title,
-        owner_id=author.id
-    )
-    db.add(db_test)
+def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session):
+  db_stage = db.query(models.Stage).filter(models.Stage.id == stage_id).first
+  if db_stage:
+    update_dict = stage_update.dict(exclude_unset=True)
+    for k, v in update_dict.items():
+      setattr(db_stage, k, v)
     db.commit()
-    db.refresh(db_test)
-    return db_test
+    db.flush()
+    db.refresh(db_stage)
+    return db_stage
+
+
+# 创建stage和author多对多映射
+def create_state_author(db:Session, stage: schemas.Stage, author: schemas.Author):
+  db_stage_author = models.StageAuthor(stage_id=stage.id, author_id=author.id)
+  db.add(db_stage_author)
+  db.commit()
+  db.refresh(db_stage_author)
+  return db_stage_author
