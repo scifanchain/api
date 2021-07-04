@@ -1,3 +1,4 @@
+from sqlalchemy.ext.declarative.api import declared_attr
 from sqlalchemy.sql.functions import mode
 from datapools.database import get_db
 from sqlalchemy.orm import Session, session
@@ -131,17 +132,13 @@ def create_stage(db: Session, stage: schemas.StageCreate, author: schemas.Author
 
 # 更新stage
 def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session, author):
-  db_stage = db.query(models.Stage).filter(models.Stage.id == stage_id).first()
-  db_author = db.query(models.Author).filter(models.Author.id== author.id).first()
+  db_stage = db.query(models.Stage).filter(models.Stage.id == stage_id).update(stage_update)
+  db_author = db.query(models.Author).filter(
+      models.Author.id == author.id).first()
   if db_stage and db_author:
-    update_dict = stage_update.dict(exclude_unset=True)
-    for k, v in update_dict.items():
-      setattr(db_stage, k, v)
-    db.commit()
-    db.flush()
-    db.refresh(db_stage)
     db_stage.partners.append(db_author)
-  return db_stage
+    db.commit()
+    return db_stage
 
 
 # 创建stage和author多对多映射
