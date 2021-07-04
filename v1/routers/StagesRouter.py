@@ -34,5 +34,5 @@ def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session =
     new_stage = crud.update_stage(stage_id, stage_update, db, author)
     if new_stage is None:
         raise HTTPException(status_code=404, detail="Stage not found")
-            
+
     return update_stage
