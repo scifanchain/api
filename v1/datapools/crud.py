@@ -130,7 +130,7 @@ def create_stage(db: Session, stage: schemas.StageCreate, author: schemas.Author
 
 
 # 更新stage
-def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session):
+def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session, author: schemas.Author = Depends(get_current_user)):
   db_stage = db.query(models.Stage).filter(
       models.Stage.id == stage_id).first()
   if db_stage:
