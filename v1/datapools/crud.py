@@ -141,6 +141,8 @@ def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session, 
       db.flush()
       db.refresh(db_stage)
 
+      db_stage.partners.append(author)
+
       return db_stage
   
   # db_stage = db.query(models.Stage).filter(models.Stage.id == stage_id).update(
