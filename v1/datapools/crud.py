@@ -139,7 +139,7 @@ def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session, 
       for k, v in update_dict.items():
           setattr(db_stage, k, v)
     
-      db_stage.stage_author = [db_author]
+      db_stage.partners = [db_author]
 
       db.add(db_stage)
       db.commit()
