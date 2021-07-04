@@ -9,12 +9,19 @@ Base = declarative_base()
 Base.metadata.create_all(bind=engine)
 
 # Stage与Author多对多关联中间表
-stages_authors = Table(
-    "stages_authors",
-    Base.metadata,
-    Column("stage_id", Integer, ForeignKey("stages.id"), nullable=False, primary_key=True),
-    Column("author_id", Integer, ForeignKey("authors.id"), nullable=False, primary_key=True)
-)
+# stages_authors = Table(
+#     "stages_authors",
+#     Base.metadata,
+#     Column("stage_id", Integer, ForeignKey("stages.id"), nullable=False, primary_key=True),
+#     Column("author_id", Integer, ForeignKey("authors.id"), nullable=False, primary_key=True)
+# )
+
+
+class Hotel(Base):
+    __tablename__ = "hotel"
+    id = Column(Integer, primary_key=True)
+    stage_id = Column(Integer, ForeignKey("stages.id"))
+    author_id = Column(Integer, ForeignKey("authors.id"))
 
 
 class Author(Base):
@@ -32,7 +39,7 @@ class Author(Base):
     stages = relationship("Stage", back_populates="owner")
     stages_join = relationship(
         "Stage",
-        secondary=stages_authors,
+        secondary="hotel",
         back_populates="partners")
 
 
@@ -48,7 +55,7 @@ class Stage(Base):
     owner = relationship("Author", back_populates="stages")
     partners = relationship(
         "Author",
-        secondary=stages_authors,
+        secondary="hotel",
         back_populates="stages_join")
 
 
