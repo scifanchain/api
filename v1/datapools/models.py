@@ -37,10 +37,10 @@ class Author(Base):
     is_active = Column(Boolean, default=True)
 
     stages = relationship("Stage", back_populates="owner")
-    stage_author = relationship(
+    join_stages = relationship(
         "Stage",
         secondary="stages_authors",
-        back_populates="stage_author")
+        back_populates="partners")
 
 
 
@@ -53,6 +53,11 @@ class Stage(Base):
     owner_id = Column(Integer, ForeignKey("authors.id"))
 
     owner = relationship("Author", back_populates="stages")
+    partners = relationship(
+        "Author",
+        secondary="stages_authors",
+        back_populates="join_stages")
+
 
 
 class Test(Base):
