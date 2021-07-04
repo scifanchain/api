@@ -9,6 +9,8 @@ from datetime import datetime, timedelta
 from typing import Optional
 from fastapi import Depends, status, HTTPException
 
+from sqlalchemy import Table, create_engine, MetaData, select, func
+
 # to get a string like this run:
 # openssl rand -hex 32
 # 令牌签名密钥
@@ -128,16 +130,18 @@ def create_stage(db: Session, stage: schemas.StageCreate, author: schemas.Author
 
 
 # 更新stage
-def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session,):
+def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session, author):
   db_stage = db.query(models.Stage).filter(models.Stage.id == stage_id).first()
-  if db_stage:
+  db_author = db.query(models.Author).filter(models.Author.id== author.id).first()
+  if db_stage and db_author:
     update_dict = stage_update.dict(exclude_unset=True)
     for k, v in update_dict.items():
       setattr(db_stage, k, v)
     db.commit()
     db.flush()
     db.refresh(db_stage)
-    return db_stage
+    db_stage.partners.append(db_author)
+  return db_stage
 
 
 # 创建stage和author多对多映射
