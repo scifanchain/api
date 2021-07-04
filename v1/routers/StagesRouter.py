@@ -29,7 +29,7 @@ async def read_stages(stage_id: int, db: Session = Depends(get_db)):
     return stage
 
 
-@router.put("/stages/{stage_id}", response_model=schemas.StageUpdate, tags=["stages"])
+@router.put("/stages/{stage_id}", response_model=schemas.Stage, tags=["stages"])
 def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session = Depends(get_db), author: schemas.Author = Depends(crud.get_current_user)):
     new_stage = crud.update_stage(stage_id=stage_id, stage_update=stage_update, db=db, author=author)
     if new_stage is None:
