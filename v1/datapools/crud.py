@@ -141,7 +141,7 @@ def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session, 
      
       # db_stage.partners.append(db_author)
 
-      db_stage.partners = db_author
+      db_stage.partners = [db_author]
 
       db.add(db_stage)
       db.commit()
