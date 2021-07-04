@@ -1,4 +1,3 @@
-from sqlalchemy.ext.declarative.api import declared_attr
 from sqlalchemy.sql.functions import mode
 from datapools.database import get_db
 from sqlalchemy.orm import Session, session
