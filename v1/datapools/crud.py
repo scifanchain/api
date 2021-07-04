@@ -138,10 +138,8 @@ def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session, 
       update_dict = stage_update.dict(exclude_unset=True)
       for k, v in update_dict.items():
           setattr(db_stage, k, v)
-     
-      # db_stage.partners.append(db_author)
-
-      db_stage.partners = [db_author]
+    
+      db_stage.stage_author = [db_author]
 
       db.add(db_stage)
       db.commit()
@@ -150,15 +148,6 @@ def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session, 
 
 
       return db_stage
-  
-  # db_stage = db.query(models.Stage).filter(models.Stage.id == stage_id).update(
-  #     **stage_update.dict(exclude_unset=True))
-  # db_author = db.query(models.Author).filter(models.Author.id == author.id).first()
-  # if db_stage and db_author:
-  #   # db_stage.partners.append(db_author)
-  #   db.commit()
-  #   return db_stage
-
 
 # 创建stage和author多对多映射
 def create_state_author(stage_id: int, author_id: int, db: Session):

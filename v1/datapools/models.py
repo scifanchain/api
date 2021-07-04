@@ -17,8 +17,8 @@ Base.metadata.create_all(bind=engine)
 # )
 
 
-class Hotel(Base):
-    __tablename__ = "hotel"
+class RelateStagesAuthors(Base):
+    __tablename__ = "stages_authors"
     id = Column(Integer, primary_key=True)
     stage_id = Column(Integer, ForeignKey("stages.id"))
     author_id = Column(Integer, ForeignKey("authors.id"))
@@ -37,10 +37,10 @@ class Author(Base):
     is_active = Column(Boolean, default=True)
 
     stages = relationship("Stage", back_populates="owner")
-    stages_join = relationship(
+    stage_author = relationship(
         "Stage",
-        secondary="hotel",
-        back_populates="partners")
+        secondary="stages_authors",
+        back_populates="stage_author")
 
 
 
@@ -53,11 +53,6 @@ class Stage(Base):
     owner_id = Column(Integer, ForeignKey("authors.id"))
 
     owner = relationship("Author", back_populates="stages")
-    partners = relationship(
-        "Author",
-        secondary="hotel",
-        back_populates="stages_join")
-
 
 
 class Test(Base):
