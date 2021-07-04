@@ -128,7 +128,7 @@ def create_stage(db: Session, stage: schemas.StageCreate, author: schemas.Author
 
 
 # 更新stage
-def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session):
+def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session,):
   db_stage = db.query(models.Stage).filter(models.Stage.id == stage_id).first()
   if db_stage:
     update_dict = stage_update.dict(exclude_unset=True)
@@ -141,8 +141,8 @@ def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session):
 
 
 # 创建stage和author多对多映射
-def create_state_author(db:Session, stage: schemas.Stage, author: schemas.Author):
-  db_stage_author = models.StageAuthor(stage_id=stage.id, author_id=author.id)
+def create_state_author(stage_id: int, author_id: int, db: Session):
+  db_stage_author = models.stages_authors(stage_id, author_id)
   db.add(db_stage_author)
   db.commit()
   db.refresh(db_stage_author)
