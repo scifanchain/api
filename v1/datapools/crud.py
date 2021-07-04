@@ -133,6 +133,7 @@ def create_stage(db: Session, stage: schemas.StageCreate, author: schemas.Author
 def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session,  author: schemas.Author):
   db_stage = db.query(models.Stage).filter(
       models.Stage.id == stage_id).first()
+  db_author = db.query(models.Author).filter(models.Author.id == author.id).first()
   if db_stage:
       update_dict = stage_update.dict(exclude_unset=True)
       for k, v in update_dict.items():
@@ -141,7 +142,7 @@ def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session, 
       db.flush()
       db.refresh(db_stage)
 
-      db_stage.partners.append(author)
+      db_stage.partners.append(db_author)
 
       return db_stage
   
