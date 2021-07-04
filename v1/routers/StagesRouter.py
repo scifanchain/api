@@ -30,8 +30,8 @@ async def read_stages(stage_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/stages/{stage_id}", response_model=schemas.Stage, tags=["stages"])
-def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session = Depends(get_db), author: schemas.Author = Depends(crud.get_current_user)):
-    new_stage = crud.update_stage(stage_id, stage_update, db, author)
+def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session = Depends(get_db)):
+    new_stage = crud.update_stage(stage_id, stage_update, db)
     if new_stage is None:
         raise HTTPException(status_code=404, detail="Stage not found")
 
