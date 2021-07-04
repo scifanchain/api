@@ -131,7 +131,7 @@ def create_stage(db: Session, stage: schemas.StageCreate, author: schemas.Author
 
 # 更新stage
 def update_stage(stage_id: int, stage_update: schemas.StageUpdate, db: Session, author):
-  db_stage = db.query(models.Stage).filter(models.Stage.id == stage_id).update(**stage_update.dict())
+  db_stage = db.query(models.Stage).filter(models.Stage.id == stage_id).update({"title":"fuck", "content":"you"})
   db_author = db.query(models.Author).filter(models.Author.id == author.id).first()
   if db_stage and db_author:
     # db_stage.partners.append(db_author)
