@@ -5,12 +5,33 @@ from sqlalchemy.orm import Session
 from datapools.database import get_db
 from datetime import datetime, timedelta
 
+from fastapi_jwt_auth import AuthJWT
+
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 router = APIRouter()
 
+@router.post('/login')
+def login(user: schemas.Author, Authorize: AuthJWT = Depends()):
+    if user.username != "test" or user.password != "test":
+        raise HTTPException(status_code=401,detail="Bad username or password")
+
+    # subject identifier for who this token is for example id or username from database
+    access_token = Authorize.create_access_token(subject=user.username)
+    return {"access_token": access_token}
+
+@router.post("/authors/login/", response_model=schemas.Token, tags=["authors"])
+async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db), Authorize: AuthJWT = Depends()):
+    user = crud.authenticate_user(db, form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="用户名或密码错误",
+        )
+    access_token = Authorize.create_access_token(subject=user.username)
+    return {"access_token": access_token, "token_type": "bearer"}
 
 @router.get("/authors/", response_model=List[schemas.Author], tags=["authors"])
 def read_authors(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
