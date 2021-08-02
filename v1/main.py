@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from routers import AuthorsRouter, StagesRouter
+from routers import AuthorsRouter, StagesRouter, TestRouter
 from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
@@ -52,6 +52,7 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
 
 app.include_router(StagesRouter.router)
 app.include_router(AuthorsRouter.router)
+app.include_router(TestRouter.router)
 
 @app.get("/")
 async def root():

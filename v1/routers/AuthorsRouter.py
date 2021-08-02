@@ -40,7 +40,9 @@ def read_authors(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
 
 
 @router.get("/authors/me/", response_model=schemas.Author, tags=["authors"])
-async def read_authors_me(current_author: schemas.Author = Depends(crud.get_current_user)):
+async def read_authors_me(current_author: schemas.Author = Depends(crud.get_current_user), Authorize: AuthJWT = Depends()):
+    Authorize.jwt_required()
+    
     print(current_author.__dict__)
     return current_author
 
