@@ -56,6 +56,6 @@ class StageLog(Base):
     id = Column(BigInteger, primary_key=True, index=True)
     title = Column(String(200), index=True)
     content = Column(Text)
-    author_id = Column(Integer, ForeignKey("authors.id"))
-    author = relationship("Author", back_populates="stage_logs")
+    # author_id = Column(Integer, ForeignKey("authors.id"))
+    # author = relationship("Author", back_populates="stage_logs")
     created_time = Column(DateTime)
