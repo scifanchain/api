@@ -15,7 +15,7 @@ router = APIRouter()
 
 # 用户注册
 # 同时生成access_token和refresh_token
-@router.post("/authors/login/", response_model=schemas.Token, tags=["authors"])
+@router.post("/authors/login/", tags=["authors"])
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db), Authorize: AuthJWT = Depends()):
     user = crud.authenticate_user(db, form_data.username, form_data.password)
     if not user:
