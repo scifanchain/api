@@ -13,15 +13,8 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 router = APIRouter()
 
-@router.post('/login')
-def login(user: schemas.Author, Authorize: AuthJWT = Depends()):
-    if user.username != "test" or user.password != "test":
-        raise HTTPException(status_code=401,detail="Bad username or password")
-
-    # subject identifier for who this token is for example id or username from database
-    access_token = Authorize.create_access_token(subject=user.username)
-    return {"access_token": access_token}
-
+# 用户注册
+# 同时生成access_token和refresh_token
 @router.post("/authors/login/", response_model=schemas.Token, tags=["authors"])
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db), Authorize: AuthJWT = Depends()):
     user = crud.authenticate_user(db, form_data.username, form_data.password)
@@ -31,7 +24,33 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
             detail="用户名或密码错误",
         )
     access_token = Authorize.create_access_token(subject=user.username)
-    return {"access_token": access_token, "token_type": "bearer"}
+    refresh_token = Authorize.create_refresh_token(subject=user.username)
+    return { "token_type": "bearer", "access_token": access_token,"refresh_token":refresh_token}
+
+
+# 刷新令牌
+@router.post('/authors/refresh')
+def refresh(Authorize: AuthJWT = Depends()):
+    """
+    The jwt_refresh_token_required() function insures a valid refresh
+    token is present in the request before running any code below that function.
+    we can use the get_jwt_subject() function to get the subject of the refresh
+    token, and use the create_access_token() function again to make a new access token
+    """
+    Authorize.jwt_refresh_token_required()
+
+    current_user = Authorize.get_jwt_subject()
+    new_access_token = Authorize.create_access_token(subject=current_user)
+    return {"access_token": new_access_token}
+
+# 获取当前登录用户
+@router.get('/authors/current/')
+def protected(Authorize: AuthJWT = Depends()):
+    Authorize.jwt_required()
+
+    current_user = Authorize.get_jwt_subject()
+    return {"current_user": current_user}
+
 
 @router.get("/authors/", response_model=List[schemas.Author], tags=["authors"])
 def read_authors(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
