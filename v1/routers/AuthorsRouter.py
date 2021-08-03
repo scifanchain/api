@@ -15,7 +15,7 @@ router = APIRouter()
 
 # 用户注册
 # 同时生成access_token和refresh_token
-@router.post("/authors/login/", tags=["authors"])
+@router.post("/authors/login/",  response_model=schemas.Token,  tags=["authors"])
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db), Authorize: AuthJWT = Depends()):
     user = crud.authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -23,9 +23,10 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="用户名或密码错误",
         )
+
     access_token = Authorize.create_access_token(subject=user.username)
     refresh_token = Authorize.create_refresh_token(subject=user.username)
-    return { "token_type": "bearer", "access_token": access_token,"refresh_token":refresh_token}
+    return {"access_token": access_token, "refresh_token": refresh_token,  "token_type": "bearer"}
 
 
 # 刷新令牌
@@ -60,7 +61,6 @@ def read_authors(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
 
 @router.get("/authors/me/", response_model=schemas.Author, tags=["authors"])
 async def read_authors_me(current_author: schemas.Author = Depends(crud.get_current_user), Authorize: AuthJWT = Depends()):
-    Authorize.jwt_required()
     
     print(current_author.__dict__)
     return current_author
