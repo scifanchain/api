@@ -38,6 +38,7 @@ app.add_middleware(
 
 class Settings(BaseModel):
     authjwt_secret_key: str = "569bbbbce875a614e0d8c471e63891a4308331b99fc8731b2238dcdb3468dc22"
+    authjwt_access_token_expires: int = 60
 
 @AuthJWT.load_config
 def get_config():
