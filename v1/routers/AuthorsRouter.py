@@ -23,11 +23,14 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="用户名或密码错误",
         )
-
+    # access_expires = timedelta(days=1)
+    # refresh_expires = timedelta(days=30)
+    # access_token = Authorize.create_access_token(subject=user.username, expires_time=access_expires)
     access_token = Authorize.create_access_token(subject=user.username)
+    # refresh_token = Authorize.create_refresh_token(subject=user.username, expires_time=refresh_expires)
     refresh_token = Authorize.create_refresh_token(subject=user.username)
+    
     return {"access_token": access_token, "refresh_token": refresh_token,  "token_type": "bearer"}
-
 
 # 获取令牌
 @router.post("/authors/token/", tags=["authors"])
@@ -68,6 +71,15 @@ def protected(Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
 
     current_user = Authorize.get_jwt_subject()
+
+    # if(current_user == ''){
+    #     raise HTTPException(
+    #         status_code=status.HTTP_401_UNAUTHORIZED,
+    #         detail="用户名或密码错误",
+    #         headers={"WWW-Authenticate": "Bearer"},
+    #     )
+    # }
+
     return {"current_user": current_user}
 
 
