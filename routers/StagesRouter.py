@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 from datapools.database import get_db
 from datetime import datetime, timedelta
 
+from fastapi_jwt_auth import AuthJWT
+
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -13,8 +15,15 @@ router = APIRouter()
 
 
 @router.post("/stages/create_stage/", response_model=schemas.Stage, tags=["stages"])
-async def create_stage(stage: schemas.StageCreate, db: Session = Depends(get_db), author: schemas.Author = Depends(crud.get_current_user)):
-    return crud.create_stage(stage=stage, db=db, author=author)
+async def create_stage(stage: schemas.StageCreate, db: Session = Depends(get_db), Authorize: AuthJWT = Depends()):
+    Authorize.jwt_required()
+    current_user = Authorize.get_jwt_subject()
+
+    print(current_user)
+
+    user = crud.get_author_by_username(db, current_user)
+
+    return crud.create_stage(stage=stage, db=db, author=user)
 
 
 @router.get("/stages/", tags=["stages"])

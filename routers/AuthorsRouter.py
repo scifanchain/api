@@ -109,9 +109,6 @@ def create_author(author: schemas.AuthorCreate, db: Session = Depends(get_db)):
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-
-
-
 @router.get("/authors/{username}/", response_model=schemas.Author, tags=["authors"])
 def read_author(username, db: Session = Depends(get_db)):
     db_author = crud.get_author_by_username(db, username=username)
