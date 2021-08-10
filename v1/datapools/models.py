@@ -59,10 +59,3 @@ class Stage(Base):
         back_populates="join_stages")
 
 
-
-class Test(Base):
-    __tablename__ = "tests"
-
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(200), index=True)
-    owner_id = Column(Integer, ForeignKey("authors.id"))
