@@ -1,7 +1,12 @@
-from fastapi import FastAPI
-import uvicorn
-from routers import AuthorsRouter, StagesRouter
+from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from routers import AuthorsRouter, StagesRouter, TestRouter
+from fastapi_jwt_auth import AuthJWT
+from fastapi_jwt_auth.exceptions import AuthJWTException
+from pydantic import BaseModel
+
+import uvicorn
 
 
 app = FastAPI(
@@ -31,8 +36,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class Settings(BaseModel):
+    authjwt_secret_key: str = "569bbbbce875a614e0d8c471e63891a4308331b99fc8731b2238dcdb3468dc22"
+
+@AuthJWT.load_config
+def get_config():
+    return Settings()
+
+@app.exception_handler(AuthJWTException)
+def authjwt_exception_handler(request: Request, exc: AuthJWTException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.message}
+    )
+
 app.include_router(StagesRouter.router)
 app.include_router(AuthorsRouter.router)
+app.include_router(TestRouter.router)
 
 @app.get("/")
 async def root():

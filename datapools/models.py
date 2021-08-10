@@ -1,20 +1,13 @@
+from sqlalchemy.sql.functions import now
 from fastapi import param_functions
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text, Table
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.sqltypes import BigInteger, SmallInteger
+from sqlalchemy.sql.sqltypes import BigInteger, DateTime, SmallInteger
 from .database import engine
 
 Base = declarative_base()
 Base.metadata.create_all(bind=engine)
-
-# Stage与Author多对多关联中间表
-# stages_authors = Table(
-#     "stages_authors",
-#     Base.metadata,
-#     Column("stage_id", Integer, ForeignKey("stages.id"), nullable=False, primary_key=True),
-#     Column("author_id", Integer, ForeignKey("authors.id"), nullable=False, primary_key=True)
-# )
 
 
 class RelateStagesAuthors(Base):
@@ -43,7 +36,6 @@ class Author(Base):
         back_populates="partners")
 
 
-
 class Stage(Base):
     __tablename__ = "stages"
 
@@ -59,3 +51,11 @@ class Stage(Base):
         back_populates="join_stages")
 
 
+class StageLog(Base):
+    __tablename__ = "stage_logs"
+    id = Column(BigInteger, primary_key=True, index=True)
+    title = Column(String(200), index=True)
+    content = Column(Text)
+    # author_id = Column(Integer, ForeignKey("authors.id"))
+    # author = relationship("Author", back_populates="stage_logs")
+    created_time = Column(DateTime)
